@@ -3,152 +3,58 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- 1. CSS Library (Bootstrap) -->
+  <title>List Expenses</title>
+  <!-- CSS Library: Bootstrap -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  
-  <!-- 2. Skedari lokal CSS i projektit (i nevojshëm që të punojnë stilimet) -->
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="style.css">
-
-  <title>Expenses</title>
 </head>
-<body>
+<body class="bg-light">
 
-  <header class="site-header">
-    <div class="container header-row">
-      <a class="brand" href="index.html">Expense Tracker</a>
-      <nav class="nav">
-        <a href="index.html">Home</a>
-        <a href="add.html">Add</a>
-        <a href="expenses.html">Expenses</a>
-        <a href="currency.html">Currency</a>
-      </nav>
-      <p class="clock" id="clock">--:--:--</p>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="index.html">Expense Tracker</a>
+      <div class="navbar-nav">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="add.html">Add</a>
+        <a class="nav-link active" href="expenses.html">Expenses</a>
+      </div>
     </div>
-  </header>
+  </nav>
 
-  <main class="container page">
+  <div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>Expenses List</h2>
+      <a href="add.html" class="btn btn-success">+ Add New Expense</a>
+    </div>
 
-    <!-- Quick stats, updated by js/expenses.js -->
-    <section class="stats">
-      <div class="card stat">
-        <span class="stat-label">Total spent</span>
-        <span class="stat-value" id="stat-total">0 Lek</span>
-      </div>
-      <div class="card stat">
-        <span class="stat-label">Number of expenses</span>
-        <span class="stat-value" id="stat-count">0</span>
-      </div>
-      <div class="card stat">
-        <span class="stat-label">Average per expense</span>
-        <span class="stat-value" id="stat-average">0 Lek</span>
-      </div>
-      <div class="card stat">
-        <span class="stat-label">Biggest expense</span>
-        <span class="stat-value stat-small" id="stat-biggest">none</span>
-      </div>
-    </section>
-
-    <section class="card">
-      <div class="toolbar">
-        <h2>Expenses <span class="count" id="count"></span></h2>
-        <div class="toolbar-controls">
-          <input type="search" id="search" placeholder="Search by title">
-          <select id="filter-category">
-            <option value="">All categories</option>
-            <option value="Food">Food</option>
-            <option value="Transport">Transport</option>
-            <option value="Books">Books</option>
-            <option value="Rent">Rent</option>
-            <option value="Fun">Fun</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-      </div>
-
-      <table class="expense-table">
-        <thead>
+    <div class="card shadow-sm p-4">
+      <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
           <tr>
-            <th>Date</th>
+            <th>#</th>
             <th>Title</th>
             <th>Category</th>
-            <th class="num">Amount</th>
-            <th class="actions">Actions</th>
+            <th>Amount</th>
           </tr>
         </thead>
-        <tbody id="expense-list">
-          <!-- rows are rendered by js/expenses.js -->
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Coffee with friends</td>
+            <td><span class="badge bg-info">Food</span></td>
+            <td>350 Lek</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Bus Ticket</td>
+            <td><span class="badge bg-warning text-dark">Transport</span></td>
+            <td>100 Lek</td>
+          </tr>
         </tbody>
       </table>
-
-      <p class="empty" id="empty-message">
-        No expenses yet. <a href="add.html">Add one</a> or
-        <button type="button" class="link-btn" id="load-sample">load sample data</button>.
-      </p>
-
-      <div class="danger-zone">
-        <button type="button" class="btn btn-danger" id="clear-all">Delete all expenses</button>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Edit modal: hidden until JavaScript adds the "open" class -->
-  <div class="modal-overlay" id="edit-modal">
-    <div class="modal">
-      <h2>Edit expense</h2>
-      <form id="edit-form" novalidate>
-        <input type="hidden" id="edit-id">
-
-        <div class="field">
-          <label for="edit-title">Title</label>
-          <input type="text" id="edit-title" name="title" required>
-          <small class="error" data-for="title"></small>
-        </div>
-
-        <div class="field">
-          <label for="edit-amount">Amount (Lek)</label>
-          <input type="number" id="edit-amount" name="amount" min="1" step="1" required>
-          <small class="error" data-for="amount"></small>
-        </div>
-
-        <div class="field">
-          <label for="edit-category">Category</label>
-          <select id="edit-category" name="category" required>
-            <option value="Food">Food</option>
-            <option value="Transport">Transport</option>
-            <option value="Books">Books</option>
-            <option value="Rent">Rent</option>
-            <option value="Fun">Fun</option>
-            <option value="Other">Other</option>
-          </select>
-          <small class="error" data-for="category"></small>
-        </div>
-
-        <div class="field">
-          <label for="edit-date">Date</label>
-          <input type="date" id="edit-date" name="date" required>
-          <small class="error" data-for="date"></small>
-        </div>
-
-        <div class="modal-actions">
-          <button type="button" class="btn" id="cancel-edit">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save changes</button>
-        </div>
-      </form>
     </div>
   </div>
 
-  <div class="toast" id="toast"></div>
-
-  <!-- 3. JS Library (Axios) per kërkesën e profesorit -->
+  <!-- JavaScript Library: Axios -->
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-  <!-- 4. Skedarët e JavaScript të vetë projektit -->
-  <script src="js/main.js"></script>
-  <script src="js/expenses.js"></script>
-  <script src="main.js"></script>
-  <script src="expenses.js"></script>
 </body>
 </html>
